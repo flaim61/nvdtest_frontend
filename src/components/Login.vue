@@ -58,10 +58,10 @@
         } catch (e) {
           if(e.response.status === 422){
             if (e.response.data.errors.email) {
-              this.errors.email = e.response.data.errors.email;
+              this.errors.email = e.response.data.errors.email[0];
             }
             if (e.response.data.errors.password) {
-              this.errors.password = e.response.data.errors.password;
+              this.errors.password = e.response.data.errors.password[0];
             }
           }
         }

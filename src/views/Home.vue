@@ -63,6 +63,9 @@
           <label for="exampleInputEmail1">Название</label>
           <input v-model="newFilm.name" class="form-control" type="text" required>
         </div>
+        <div class="error" v-if='errors.newFilm.name != ""'>
+          {{errors.newFilm.name}}
+        </div>
         <div class="form-group">
           <label for="exampleInputEmail1">Описание</label>
           <input v-model="newFilm.description" class="form-control" type="text" required>
@@ -100,11 +103,18 @@
         description: ""
       }
 
+      let errors = {
+        newFilm: {
+          name: "",
+        },
+      }
+
       return {
         newFilm,
         isLoggedIn: isLoggedIn(),
         films: [],
-        downloadFilmsError: false
+        downloadFilmsError: false,
+        errors
       }
     },
     async created(){
@@ -148,7 +158,7 @@
             })
           }
         } catch (e) {
-          console.log(e)
+          this.errors.newFilm.name = e.response.data.errors.name[0];
         }
       },
       async deleteFilm(film_id){
@@ -161,7 +171,7 @@
               this.films = this.films.filter(film => film.id != film_id);
           }
         } catch (e) {
-          console.log(e)
+          console.log(e.response.data.errors)
         } finally {
 
         }
@@ -169,3 +179,9 @@
     }
   }
 </script>
+
+<style lang="css">
+  .error{
+    color:red;
+  }
+</style>
